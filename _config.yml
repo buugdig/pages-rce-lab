@@ -1,0 +1,8 @@
+title: Pages RCE Lab
+kramdown:
+  forbidden_inline_options: []
+
+sass:
+  sass_dir: _sass
+  load_paths:
+    - _sass
